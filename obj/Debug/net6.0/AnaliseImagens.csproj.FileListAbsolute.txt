@@ -1,5 +1,0 @@
-C:\Users\joana\OneDrive\Ambiente de Trabalho\Universidade Aberta\Ano 2022-2023\Laboratório Desenvolvimento de Software\AnaliseImagens\obj\Debug\net6.0\AnaliseImagens.csproj.AssemblyReference.cache
-C:\Users\joana\OneDrive\Ambiente de Trabalho\Universidade Aberta\Ano 2022-2023\Laboratório Desenvolvimento de Software\AnaliseImagens\obj\Debug\net6.0\AnaliseImagens.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\joana\OneDrive\Ambiente de Trabalho\Universidade Aberta\Ano 2022-2023\Laboratório Desenvolvimento de Software\AnaliseImagens\obj\Debug\net6.0\AnaliseImagens.AssemblyInfoInputs.cache
-C:\Users\joana\OneDrive\Ambiente de Trabalho\Universidade Aberta\Ano 2022-2023\Laboratório Desenvolvimento de Software\AnaliseImagens\obj\Debug\net6.0\AnaliseImagens.AssemblyInfo.cs
-C:\Users\joana\OneDrive\Ambiente de Trabalho\Universidade Aberta\Ano 2022-2023\Laboratório Desenvolvimento de Software\AnaliseImagens\obj\Debug\net6.0\AnaliseImagens.csproj.CoreCompileInputs.cache
