@@ -6,13 +6,13 @@ participant View
 participant Model
 
 
-activate Utilizador #C24641
+activate Utilizador 
 Utilizador->Controller:IniciarPrograma()
-activate Controller #C24641
-activate View #C24641
+activate Controller 
+activate View 
 Controller->View: ApresentarInstrucoes(comandos)
 deactivate Controller
-activate Model #C24641
+activate Model 
 View->Model:ListarComandos()
 View<--Model:Retorna lista de comandos registados e descrições
 deactivate Model
@@ -20,35 +20,35 @@ Utilizador<--View:Imprime mensagem com instruções
 deactivate Utilizador
 deactivate View
 space
-activate Controller #C24641
-activate View #C24641
+activate Controller 
+activate View 
 Controller->View: ImprimirPromptInserirInput()
 deactivate Controller
-activate Utilizador #C24641
+activate Utilizador 
 Utilizador <-- View: Imprime prompt a indicar para inserir comando
 space
 deactivate View
-activate Controller #C24641
+activate Controller 
 Utilizador-->Controller: Insere comando e path para imagem
 deactivate Utilizador
 deactivate Controller
 
 group CASO 1: while(Comando inválido)
 space
-activate Controller #C24641
-activate Model #C24641
+activate Controller 
+activate Model 
 Controller->Model: ExecutarComando(comando)
 Controller<--Model: throw CommandNotValid
 deactivate Model
 Controller->Controller: HandleException(CommandNotValid)
-activate View #C24641
+activate View 
 Controller->View: ImprimirPromptInserirInput()
 deactivate Controller
-activate Utilizador #C24641
+activate Utilizador 
 Utilizador <-- View: Imprime prompt a indicar para inserir comando
 space
 deactivate View
-activate Controller #C24641
+activate Controller 
 Utilizador-->Controller: Insere comando e path para imagem
 deactivate Utilizador
 deactivate Controller
@@ -60,21 +60,21 @@ end
 
 group CASO2: while(Path para imagem inválido)
 space
-activate Controller #C24641
-activate Model #C24641
+activate Controller 
+activate Model 
 Controller->Model: ExecutarComando(comando)
 Controller<--Model: throw InvalidPath
 deactivate Model
 Controller->Controller: HandleException(InvalidPath)
 space
-activate View #C24641
+activate View 
 Controller->View: ImprimirPromptInserirInput()
 deactivate Controller
-activate Utilizador #C24641
+activate Utilizador 
 Utilizador <-- View: Imprime prompt a indicar para inserir comando
 space
 deactivate View
-activate Controller #C24641
+activate Controller 
 Utilizador-->Controller: Insere comando e path para imagem
 deactivate Utilizador
 deactivate Controller
@@ -82,36 +82,36 @@ end
 
 group CASO 3: Comando e path de imagem válidos
 space 
-activate Model #00A36C
-activate Controller #00A36C
+activate Model 
+activate Controller 
 Controller->Model: ExecutarComando(comando)
 Model-->Controller:Retorna estado de execução do comando
 deactivate Model
 deactivate Controller
 
 alt #E5E4E2 FALHA: Execução da operação com erro
-activate Controller #C24641
-activate View #C24641
+activate Controller 
+activate View 
 Controller->Controller: HandleException(OperationError)
 Controller->View: ImprimirMensagemErro()
 deactivate Controller
-activate Utilizador #C24641
+activate Utilizador 
 Utilizador <<--View: Mensagem a indicar erro na execução da operação
 deactivate View
 note right of Utilizador #FFE6E8:Exit(1)
 deactivate Utilizador
 
 else #F5FFFA SUCESSO: Execução da operação bem sucedida
-activate Controller #00A36C
-activate View #00A36C
-Controller->View: ExibirResultado()
+activate Controller 
+activate View 
+Controller->View: ApresentarResultados()
 deactivate Controller
-activate Model #00A36C
-View->Model: PedirResultado()
+activate Model 
+View->Model: FornecerResultado()
 Model-->View:Retorna resultado
 deactivate Model
 space
-activate Utilizador #00A36C
+activate Utilizador 
 Utilizador <<-- View: Mostra estatísticas ou path para a imagem alterada
 deactivate View
 note right of Utilizador #F5FFFA:Exit(0)
@@ -121,10 +121,10 @@ end
 
 group CASO 4: Utilizador solicita término de programa a qualquer instante
 space
-activate Utilizador #00A36C
-activate Controller #00A36C
+activate Utilizador 
+activate Controller 
 Utilizador-->Controller: Selecciona sair do programa
-activate View #00A36C
+activate View 
 Controller->View: ImprimirMensagemDespedida()
 deactivate Controller
 View-->Utilizador: Imprime mensagem de despedida
