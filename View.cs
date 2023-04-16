@@ -15,15 +15,21 @@ namespace AnaliseImagens
             model = _model; 
         }
 
-        public void ImprimirPromptInserirInput()
-        {
-            Console.WriteLine("Introduza um comando. Para sair, pressione 'E':");
-        }
 
-        public void ApresentarInstrucoes() {
+        public void ApresentarInstrucoes()
+        {
 
             List<string> availableCmds = model.ListarComandos();
         }
+
+        public string ImprimirPromptInserirInput()
+        {
+            Console.WriteLine("Introduza um comando. Para sair, pressione 'E':");
+            string input = Console.ReadLine();
+            return input;
+        }
+
+   
       
 
         public void ApresentarResultados() {

@@ -20,16 +20,13 @@ namespace AnaliseImagens
 
         public void IniciarPrograma()
         {
-      
             view.ApresentarInstrucoes();
             LerComando();
-       
         }
 
         private void LerComando()
         {
-            view.ImprimirPromptInserirInput();
-            command = Console.ReadLine();
+            command = view.ImprimirPromptInserirInput();
 
             if(command.Equals("E"))
             {
