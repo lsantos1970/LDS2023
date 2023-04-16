@@ -15,29 +15,50 @@ namespace AnaliseImagens
         public Controller() {
             model = new Model(this, view);
             view = new View(this, model);
-            command = null;
+            command = null;    
+        }
 
-            List<string> availableCmds = model.ListarComandos();
-            view.ApresentarInstrucoes(availableCmds);
+        public void IniciarPrograma()
+        {
+      
+            view.ApresentarInstrucoes();
+            LerComando();
+       
+        }
 
-            Console.WriteLine("Introduza um comando:");
+        private void LerComando()
+        {
+            view.ImprimirPromptInserirInput();
             command = Console.ReadLine();
 
             try
             {
-               model.ValidarComando(command);
-               model.ExecutarComando(command);
-               view.ApresentarResultados();
-                
-            } catch (Exception excp)
+                model.ValidarComando(command);
+                model.ExecutarComando(command);
+                view.ApresentarResultados();
+
+            }
+            catch (Exception excp)
             {
-              view.HandleException(excp);
+                HandleException(excp);
             }
 
-            
         }
 
+        private void HandleException(Exception excp)
+        {
+            if (excp is NoCommandFound || excp is CommandNotValid || excp is InvalidPath)
+            {
+                Console.WriteLine(excp.Message);
+                LerComando();
+            }
+            else if (excp is OperationError)
+            {
+                view.ImprimirMensagemErro(excp.Message);
+            }
 
-     
+
+        }
+
     }
 }

@@ -3,10 +3,7 @@
     public static class ExitCodes
     {
         public const int SUCCESS = 0;
-        public const int ERROR_NO_COMMAND = 1;
-        public const int ERROR_INVALID_COMMAND = 2;
-        public const int ERROR_INVALID_IMAGE = 3;
-        public const int ERROR_OPERATION_NOT_SUCCESSFUL = 4;
+        public const int ERROR_OPERATION_NOT_SUCCESSFUL = 1;
     }
 
     class AnaliseImagens
@@ -17,6 +14,7 @@
         {
             AnaliseImagens app = new AnaliseImagens();
             Controller controller = new Controller();
+            controller.IniciarPrograma();
 
         }
     }

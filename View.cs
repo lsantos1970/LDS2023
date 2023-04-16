@@ -15,34 +15,15 @@ namespace AnaliseImagens
             model = _model; 
         }
 
-        public void ApresentarInstrucoes(List <string> availableCommands) { }
-
-        public void HandleException(Exception excp) {
-            if (excp is NoCommandFound)
-            {
-                Console.WriteLine(excp.Message);
-                Environment.Exit(ExitCodes.ERROR_NO_COMMAND);
-            }
-            else if (excp is CommandNotValid)
-            {
-                Console.WriteLine(excp.Message);
-                Environment.Exit(ExitCodes.ERROR_INVALID_COMMAND);
-            }
-            else if (excp is InvalidPath)
-            {
-                Console.WriteLine(excp.Message);
-                Environment.Exit(ExitCodes.ERROR_INVALID_IMAGE);
-
-            }
-            else if (excp is OperationError)
-            {
-                Console.WriteLine(excp.Message);
-                Environment.Exit(ExitCodes.ERROR_OPERATION_NOT_SUCCESSFUL);
-            }
-
-           
+        public void ImprimirPromptInserirInput()
+        {
+            Console.WriteLine("Introduza um comando. Para sair, pressione 'E':");
         }
 
+        public void ApresentarInstrucoes() {
+
+            List<string> availableCmds = model.ListarComandos();
+        }
       
 
         public void ApresentarResultados() {
@@ -52,7 +33,13 @@ namespace AnaliseImagens
 
         }
 
-        
+        public void ImprimirMensagemErro(string message)
+        {
+            Console.WriteLine(message);
+            Environment.Exit(ExitCodes.ERROR_OPERATION_NOT_SUCCESSFUL);
+        }
+
+
 
 
 
