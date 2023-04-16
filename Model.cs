@@ -22,9 +22,6 @@ namespace AnaliseImagens
             return listCmds;
         }
 
-        public void ValidarComando(string commandReceived) {}
-
-
         public void ExecutarComando(string commandReceived) { }
 
 

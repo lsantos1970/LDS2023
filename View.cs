@@ -39,6 +39,11 @@ namespace AnaliseImagens
             Environment.Exit(ExitCodes.ERROR_OPERATION_NOT_SUCCESSFUL);
         }
 
+        public void ImprimirMensagemDespedida()
+        {
+            Console.WriteLine("A terminar sessão, até breve!");
+            Environment.Exit(ExitCodes.SUCCESS);
+        }
 
 
 

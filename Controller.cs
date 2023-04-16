@@ -31,9 +31,14 @@ namespace AnaliseImagens
             view.ImprimirPromptInserirInput();
             command = Console.ReadLine();
 
+            if(command.Equals("E"))
+            {
+                view.ImprimirMensagemDespedida();
+                return;
+            } 
+
             try
             {
-                model.ValidarComando(command);
                 model.ExecutarComando(command);
                 view.ApresentarResultados();
 
