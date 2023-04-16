@@ -5,99 +5,100 @@ participant Controller
 participant View
 participant Model
 
-group #FFE6E8 CASO1: Inicia programa sem comandos
-space 
+
 activate Utilizador #C24641
-Utilizador->Controller:Controller()
+Utilizador->Controller:IniciarPrograma()
 activate Controller #C24641
-activate Model #C24641
-Controller->Model:ListarComandos(): List<ComandoHelp>
-Controller<--Model:Retorna lista de comandos registados e descrições
-deactivate Model
+activate View #C24641
 Controller->View: ApresentarInstrucoes(comandos)
-activate View #C24641
 deactivate Controller
-Utilizador<--View:Imprime mensagem com instruções
-deactivate View
-note right of Utilizador #FFE6E8:Exit(1)
-deactivate Utilizador
-end
-
-group CASO2: Inicia programa com comando e argumentos
-space 
-activate Utilizador
-Utilizador->Controller:Controller(comando, argumentos)
-activate Controller 
-deactivate Utilizador
-activate Model 
-Controller->Model:ValidarComando(comando): Comando instance\nNormalizarPath(argumentos.path): String
-deactivate Model
-deactivate Controller
-
-group #FFE6E8 ERRO 1: comando inválido
 activate Model #C24641
-activate Controller #C24641
-Model->Controller:Recebe Exception NoCommandFound
+View->Model:ListarComandos()
+View<--Model:Retorna lista de comandos registados e descrições
 deactivate Model
+Utilizador<--View:Imprime mensagem com instruções
+deactivate Utilizador
+deactivate View
 space
+activate Controller #C24641
 activate View #C24641
-Controller->View:ViewError(NoCommandFound, command)
+Controller->View: ImprimirPromptInserirInput()
 deactivate Controller
 activate Utilizador #C24641
-Utilizador <-- View: Imprime mensagem a indicar que o o comando inserido é inválido 
-deactivate View
+Utilizador <-- View: Imprime prompt a indicar para inserir comando
 space
-activate Controller #C24641
-activate Model #C24641
-Controller->Model:ListarComandos(): List<ComandoHelp>
-Controller<--Model:Retorna lista de comandos registados e descrições
-deactivate Model
-Controller->View: ApresentarInstrucoes(comandos)
-activate View #C24641
-deactivate Controller
-Utilizador<--View:Imprime mensagem com instruções
 deactivate View
-note right of Utilizador #FFE6E8:Exit(2)
+activate Controller #C24641
+Utilizador->Controller: Insere comando e path para imagem
 deactivate Utilizador
-end
+deactivate Controller
 
-group #FFE6E8 ERRO 2: Path de imagem inválido
-space 
+group CASO 1: while(Comando inválido)
+space
 activate Controller #C24641
 activate Model #C24641
-Model->Controller: Recebe instância do Comando\nRecebe Exception NoValidPath
+Controller->Model: ExecutarComando(comando)
+Controller<--Model: throw CommandNotValid
 deactivate Model
-space
+Controller->Controller: HandleException(CommandNotValid)
 activate View #C24641
-Controller->View:ViewError(NoValidPath, argumentos.path)
+Controller->View: ImprimirPromptInserirInput()
 deactivate Controller
 activate Utilizador #C24641
-Utilizador <-- View: Imprime mensagem a indicar que path da imagem é inválido 
+Utilizador <-- View: Imprime prompt a indicar para inserir comando
+space
 deactivate View
-note right of Utilizador #FFE6E8:Exit(3)
+activate Controller #C24641
+Utilizador->Controller: Insere comando e path para imagem
 deactivate Utilizador
+deactivate Controller
 end
 
 
-group #C2E5D3 Inicia programa com comando e path de imagem
+
+
+
+group CASO2: while(Path para imagem inválido)
+space
+activate Controller #C24641
+activate Model #C24641
+Controller->Model: ExecutarComando(comando)
+Controller<--Model: throw InvalidPath
+deactivate Model
+Controller->Controller: HandleException(InvalidPath)
+space
+activate View #C24641
+Controller->View: ImprimirPromptInserirInput()
+deactivate Controller
+activate Utilizador #C24641
+Utilizador <-- View: Imprime prompt a indicar para inserir comando
+space
+deactivate View
+activate Controller #C24641
+Utilizador->Controller: Insere comando e path para imagem
+deactivate Utilizador
+deactivate Controller
+end 
+
+group CASO 3: Comando e path de imagem válidos
 space 
 activate Model #00A36C
 activate Controller #00A36C
-Model->Controller:Recebe instância do Comando\nRecebe a path absoluta da imagem (normalizada)
-Controller->Model:Comando.Executar(path)
-Model->Controller:Retorna estado de execução do comando
+Controller->Model: ExecutarComando(comando)
+Model-->Controller:Retorna estado de execução do comando
 deactivate Model
 deactivate Controller
 
-alt #E5E4E2 Erro 4: Execução da operação com erro
+alt #E5E4E2 FALHA: Execução da operação com erro
 activate Controller #C24641
 activate View #C24641
-Controller->View: ViewError(ExecutionNotSuccessful, command)
+Controller->Controller: HandleException(OperationError)
+Controller->View: ImprimirMensagemErro()
 deactivate Controller
 activate Utilizador #C24641
 Utilizador <<--View: Mensagem a indicar erro na execução da operação
-note right of Utilizador #FFE6E8:Exit(4)
 deactivate View
+note right of Utilizador #FFE6E8:Exit(1)
 deactivate Utilizador
 
 else #F5FFFA SUCESSO: Execução da operação bem sucedida
@@ -107,7 +108,7 @@ Controller->View: ExibirResultado()
 deactivate Controller
 activate Model #00A36C
 View->Model: PedirResultado()
-Model->View:Retorna resultado
+Model-->View:Retorna resultado
 deactivate Model
 space
 activate Utilizador #00A36C
@@ -118,7 +119,18 @@ deactivate Utilizador
 end
 end
 
-
+group CASO 4: Utilizador solicita término de programa a qualquer instante
+space
+activate Utilizador #00A36C
+activate Controller #00A36C
+Utilizador->Controller: Selecciona sair do programa
+activate View #00A36C
+Controller->View: ImprimirMensagemDespedida()
+deactivate Controller
+View-->Utilizador: Imprime mensagem de despedida
+deactivate View
+note right of Utilizador #F5FFFA:Exit(0)
+deactivate Utilizador 
 end
 
 space
