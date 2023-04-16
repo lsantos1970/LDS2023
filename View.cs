@@ -22,9 +22,9 @@ namespace AnaliseImagens
             List<string> availableCmds = model.ListarComandos();
         }
 
-        public string ImprimirPromptInserirInput()
+        public string ImprimirPromptInserirInput(string msg)
         {
-            Console.WriteLine("Introduza um comando. Para sair, pressione 'E':");
+            Console.WriteLine(msg + "Introduza um comando. Para sair, pressione 'E':");
             string input = Console.ReadLine();
             return input;
         }

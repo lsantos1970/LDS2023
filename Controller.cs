@@ -9,24 +9,22 @@ namespace AnaliseImagens
         //Atributos da classe 
         private View view;
         private Model model; 
-        private string? command;
 
         //Construtor sem parâmetros
         public Controller() {
             model = new Model(this, view);
-            view = new View(this, model);
-            command = null;    
+            view = new View(this, model);  
         }
 
         public void IniciarPrograma()
         {
             view.ApresentarInstrucoes();
-            LerComando();
+            string command = view.ImprimirPromptInserirInput("");
+            LerComando(command);
         }
 
-        private void LerComando()
+        private void LerComando(string command)
         {
-            command = view.ImprimirPromptInserirInput();
 
             if(command.Equals("E"))
             {
@@ -51,8 +49,9 @@ namespace AnaliseImagens
         {
             if (excp is NoCommandFound || excp is CommandNotValid || excp is InvalidPath)
             {
-                Console.WriteLine(excp.Message);
-                LerComando();
+
+                string command = view.ImprimirPromptInserirInput(excp.Message + "\n");
+                LerComando(command);
             }
             else if (excp is OperationError)
             {
