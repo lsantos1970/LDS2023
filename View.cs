@@ -15,9 +15,9 @@ namespace AnaliseImagens
             model = _model; 
         }
 
-        public void ImprimirPromptInserirInput()
+        public void ImprimirPromptInserirInput(string msg)
         {
-            Console.WriteLine("Introduza um comando. Para sair, pressione 'E':");
+            Console.WriteLine(msg + "Introduza um comando. Para sair, pressione 'E':");
         }
 
         public void ApresentarInstrucoes() {
