@@ -1,6 +1,4 @@
-﻿
-
-using System.Data;
+﻿using System.Data;
 
 namespace AnaliseImagens
 {
@@ -9,57 +7,35 @@ namespace AnaliseImagens
         //Atributos da classe 
         private View view;
         private Model model; 
+        private string? command;
 
         //Construtor sem parâmetros
         public Controller() {
-            model = new Model(this, view);
-            view = new View(this, model);  
-        }
+            view = new View(this); // Pass the Controller reference to the View
+            model = new Model(this, view); // Pass both the Controller and View references to the Model
+            view.Model = model; // Set the Model reference in the View
+            command = null;
 
-        public void IniciarPrograma()
-        {
-            view.ApresentarInstrucoes();
-            string command = view.ImprimirPromptInserirInput("");
-            LerComando(command);
-        }
+            List<string> availableCmds = model.ListarComandos();
+            view.ApresentarInstrucoes(availableCmds);
 
-        private void LerComando(string command)
-        {
-
-            if(command.Equals("E"))
-            {
-                view.ImprimirMensagemDespedida();
-                return;
-            } 
+            Console.WriteLine("Introduza um comando:");
+            command = Console.ReadLine();
 
             try
             {
-                model.ExecutarComando(command);
-                view.ApresentarResultados();
-
-            }
-            catch (Exception excp)
+               model.ValidarComando(command);
+               model.ExecutarComando(command);
+                
+            } catch (Exception excp)
             {
-                HandleException(excp);
+              view.HandleException(excp);
             }
 
+            
         }
 
-        private void HandleException(Exception excp)
-        {
-            if (excp is NoCommandFound || excp is CommandNotValid || excp is InvalidPath)
-            {
 
-                string command = view.ImprimirPromptInserirInput(excp.Message + "\n");
-                LerComando(command);
-            }
-            else if (excp is OperationError)
-            {
-                view.ImprimirMensagemErro(excp.Message);
-            }
-
-
-        }
-
+     
     }
 }

@@ -8,51 +8,74 @@ namespace AnaliseImagens
         private Controller controller;
         private Model model;
 
-
+        public Model Model
+        {
+            get { return model; }
+            set
+            {
+                model = value;
+                model.OnResultsAvailable += ApresentarResultados;
+            }
+        }
         //Construtor
-        public View(Controller _controller, Model _model) {
+        public View(Controller _controller) 
+        {
             controller = _controller;
-            model = _model; 
         }
 
-
-        public void ApresentarInstrucoes()
+        public void ApresentarInstrucoes(List <string> availableCommands) 
         {
-
-            List<string> availableCmds = model.ListarComandos();
+            Console.WriteLine("Available commands:");
+            foreach (string command in availableCommands)
+            {
+                Console.WriteLine($"- {command}");
+            }
         }
 
-        public string ImprimirPromptInserirInput(string msg)
+        public void HandleException(Exception excp) {
+            if (excp is NoCommandFound)
+            {
+                Console.WriteLine(excp.Message);
+                Environment.Exit(ExitCodes.ERROR_NO_COMMAND);
+            }
+            else if (excp is CommandNotValid)
+            {
+                Console.WriteLine(excp.Message);
+                Environment.Exit(ExitCodes.ERROR_INVALID_COMMAND);
+            }
+            else if (excp is InvalidPath)
+            {
+                Console.WriteLine(excp.Message);
+                Environment.Exit(ExitCodes.ERROR_INVALID_IMAGE);
+
+            }
+            else if (excp is OperationError)
+            {
+                Console.WriteLine(excp.Message);
+                Environment.Exit(ExitCodes.ERROR_OPERATION_NOT_SUCCESSFUL);
+            }   
+        }
+
+    
+        public void ApresentarResultados(object sender, ResultsEventArgs e)
         {
-            Console.WriteLine(msg + "Introduza um comando. Para sair, pressione 'E':");
-            string input = Console.ReadLine();
-            return input;
-        }
+             ColorPercentages results = e.Results;
 
-   
-      
+            Console.WriteLine("Results:");
+            Console.WriteLine($"Red: {results.RedPercentage}%");
+            Console.WriteLine($"Green: {results.GreenPercentage}%");
+            Console.WriteLine($"Blue: {results.BluePercentage}%");
 
-        public void ApresentarResultados() {
-
-            model.FornecerResultado();
             Environment.Exit(ExitCodes.SUCCESS);
-
         }
 
-        public void ImprimirMensagemErro(string message)
+        public static class ExitCodes
         {
-            Console.WriteLine(message);
-            Environment.Exit(ExitCodes.ERROR_OPERATION_NOT_SUCCESSFUL);
+            public const int ERROR_NO_COMMAND = 1;
+            public const int ERROR_INVALID_COMMAND = 2;
+            public const int ERROR_INVALID_IMAGE = 3;
+            public const int ERROR_OPERATION_NOT_SUCCESSFUL = 4;
+            public const int SUCCESS = 0;
         }
-
-        public void ImprimirMensagemDespedida()
-        {
-            Console.WriteLine("A terminar sessão, até breve!");
-            Environment.Exit(ExitCodes.SUCCESS);
-        }
-
-
-
-
     }
 }
