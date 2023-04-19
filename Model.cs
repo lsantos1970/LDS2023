@@ -16,15 +16,13 @@ namespace AnaliseImagens
     public delegate void ResultsHandler(object sender, ResultsEventArgs e);
     class Model
     {
-        //Atributos
+        //Atributo da classe
         private List<string> listCmds;
       
-        public delegate void CommandValidator(string commandReceived);
         public delegate void CommandExecutor(string commandReceived);
         public delegate void ResultsHandler(object sender, ResultsEventArgs e);
         public event ResultsHandler OnResultsAvailable;
 
-        private Dictionary<string, CommandValidator> commandValidators;
         private Dictionary<string, CommandExecutor> commandExecutors;
 
         //Construtor
@@ -33,12 +31,7 @@ namespace AnaliseImagens
           
             listCmds = new List<string> {"analisar..."};
 
-            // Inicializar os dicionários e adicionar um delegado para cada comando
-            commandValidators = new Dictionary<string, CommandValidator>
-            {
-                { "analyze", ValidarComando }
-            };
-
+            // Inicializar o dicionário e adicionar um delegado para cada comando
             commandExecutors = new Dictionary<string, CommandExecutor>
             {
                 { "analyze", ExecutarComando }
@@ -58,17 +51,6 @@ namespace AnaliseImagens
             OnResultsAvailable?.Invoke(this, new ResultsEventArgs(results));
         }
 
-        public void ValidarComando(string commandReceived)
-        {
-            if (commandValidators.TryGetValue(commandReceived, out CommandValidator validator))
-            {
-                validator(commandReceived);
-            }
-            else
-            {
-                throw new CommandNotValid(commandReceived);
-            }
-        }
 
         public void ExecutarComando(string commandReceived)
         {
@@ -86,7 +68,7 @@ namespace AnaliseImagens
 
        public ColorPercentages FornecerResultado()
         {
-            // Calculate color percentages and return the result as a ColorPercentages object
+            // Calcular as percentagens de cada cor e retornar resultado como objecto do tipo ColorPercentages
             ColorPercentages colorPercentages = new ColorPercentages
             {
                 RedPercentage = 0.30,

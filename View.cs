@@ -25,7 +25,7 @@ namespace AnaliseImagens
 
         public void ApresentarInstrucoes()
         {
-            Console.WriteLine("Available commands:");
+            Console.WriteLine("Comandos disponíveis:");
             foreach (string command in availableCommands)
             {
                 Console.WriteLine($"- {command}");
@@ -67,7 +67,7 @@ namespace AnaliseImagens
         {
              ColorPercentages results = e.Results;
 
-            Console.WriteLine("Results:");
+            Console.WriteLine("Resultados:");
             Console.WriteLine($"Red: {results.RedPercentage}%");
             Console.WriteLine($"Green: {results.GreenPercentage}%");
             Console.WriteLine($"Blue: {results.BluePercentage}%");
