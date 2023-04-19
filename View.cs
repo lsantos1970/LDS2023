@@ -1,4 +1,4 @@
-﻿
+﻿using AnaliseImagens;
 
 namespace AnaliseImagens
 {
@@ -23,7 +23,7 @@ namespace AnaliseImagens
             controller = _controller;
         }
 
-        public void ApresentarInstrucoes(List <string> availableCommands) 
+        public void ApresentarInstrucoes(List<string> availableCommands)
         {
             Console.WriteLine("Available commands:");
             foreach (string command in availableCommands)
@@ -32,21 +32,23 @@ namespace AnaliseImagens
             }
         }
 
+        public void ImprimirPromptInserirInput(string msg)
+        {
+            Console.WriteLine(msg + "Introduza um comando. Para sair, pressione 'E':");
+        }
+
         public void HandleException(Exception excp) {
             if (excp is NoCommandFound)
             {
                 Console.WriteLine(excp.Message);
-                Environment.Exit(ExitCodes.ERROR_NO_COMMAND);
             }
             else if (excp is CommandNotValid)
             {
                 Console.WriteLine(excp.Message);
-                Environment.Exit(ExitCodes.ERROR_INVALID_COMMAND);
             }
             else if (excp is InvalidPath)
             {
                 Console.WriteLine(excp.Message);
-                Environment.Exit(ExitCodes.ERROR_INVALID_IMAGE);
 
             }
             else if (excp is OperationError)
@@ -69,13 +71,5 @@ namespace AnaliseImagens
             Environment.Exit(ExitCodes.SUCCESS);
         }
 
-        public static class ExitCodes
-        {
-            public const int ERROR_NO_COMMAND = 1;
-            public const int ERROR_INVALID_COMMAND = 2;
-            public const int ERROR_INVALID_IMAGE = 3;
-            public const int ERROR_OPERATION_NOT_SUCCESSFUL = 4;
-            public const int SUCCESS = 0;
-        }
     }
 }

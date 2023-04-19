@@ -12,36 +12,13 @@ namespace AnaliseImagens
         public double GreenPercentage { get; set; }
         public double BluePercentage { get; set; }
     }
-    
-    //Definição das diferentes excepções que esta classe pode lançar
-    class NoCommandFound : Exception
-    {
-        public NoCommandFound() : base("Deve introduzir um comando."){}
-    }
-
-
-    class CommandNotValid : Exception
-    {
-        public CommandNotValid(string command) : base($"Comando {command} não é válido.") { }
-    }
-
-    class InvalidPath : Exception
-    {   
-        public InvalidPath(string path) : base($"Não foi encontrada nenhuma imagem em {path}.") { }
-    }
-
-    class OperationError: Exception
-    {
-        public OperationError(string operation) : base($"Não foi posível executar a operação {operation} com sucesso.") { }
-    }
-
+   
     public delegate void ResultsHandler(object sender, ResultsEventArgs e);
     class Model
     {
         //Atributos
         private List<string> listCmds;
-        private Controller controller;
-        private View view;
+      
         public delegate void CommandValidator(string commandReceived);
         public delegate void CommandExecutor(string commandReceived);
         public delegate void ResultsHandler(object sender, ResultsEventArgs e);
@@ -51,10 +28,9 @@ namespace AnaliseImagens
         private Dictionary<string, CommandExecutor> commandExecutors;
 
         //Construtor
-        public Model(Controller _controller, View _view)
+        public Model()
         {
-            controller = _controller;
-            view = _view;
+          
             listCmds = new List<string> {"analisar..."};
 
             // Initialize the dictionaries and add the corresponding delegates for each command

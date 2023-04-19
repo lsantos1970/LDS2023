@@ -5,6 +5,7 @@ participant Controller
 participant View
 participant Model
 
+<<<<<<< HEAD
 activate Utilizador
 activate Controller
 Utilizador->Controller: IniciarPrograma()
@@ -13,6 +14,16 @@ deactivate Utilizador
 Controller->View: ApresentarInstrucoes()
 deactivate Controller
 activate Model
+=======
+
+activate Utilizador 
+Utilizador->Controller:IniciarPrograma()
+activate Controller 
+activate View 
+Controller->View: ApresentarInstrucoes(comandos)
+deactivate Controller
+activate Model 
+>>>>>>> krasner_pope_update
 View->Model:ListarComandos()
 View<--Model:Retorna lista de comandos registados e descrições
 deactivate Model
@@ -21,14 +32,25 @@ View -->Utilizador: Imprime mensagem com instruções
 deactivate View
 deactivate Utilizador
 space
+<<<<<<< HEAD
 activate Controller
 activate View
+=======
+activate Controller 
+activate View 
+>>>>>>> krasner_pope_update
 Controller->View: ImprimirPromptInserirInput()
 deactivate Controller
 activate Utilizador 
 Utilizador <-- View: Imprime prompt a indicar para inserir comando
 space
+<<<<<<< HEAD
 Utilizador-->View: Insere comando e path para imagem
+=======
+deactivate View
+activate Controller 
+Utilizador-->Controller: Insere comando e path para imagem
+>>>>>>> krasner_pope_update
 deactivate Utilizador
 space
 activate Controller
@@ -50,7 +72,13 @@ deactivate Controller
 activate Utilizador 
 Utilizador <-- View: Imprime prompt a indicar para inserir comando
 space
+<<<<<<< HEAD
 Utilizador-->View: Insere comando e path para imagem
+=======
+deactivate View
+activate Controller 
+Utilizador-->Controller: Insere comando e path para imagem
+>>>>>>> krasner_pope_update
 deactivate Utilizador
 space
 activate Controller
@@ -74,7 +102,13 @@ deactivate Controller
 activate Utilizador 
 Utilizador <-- View: Imprime prompt a indicar para inserir comando
 space
+<<<<<<< HEAD
 Utilizador-->View: Insere comando e path para imagem
+=======
+deactivate View
+activate Controller 
+Utilizador-->Controller: Insere comando e path para imagem
+>>>>>>> krasner_pope_update
 deactivate Utilizador
 space
 activate Controller
@@ -93,7 +127,11 @@ Model-->Controller:Retorna estado de execução do comando
 deactivate Model
 deactivate Controller
 
+<<<<<<< HEAD
 alt #E5E4E2 FALHA: Execução da operação com erro
+=======
+alt FALHA: Execução da operação com erro
+>>>>>>> krasner_pope_update
 activate Controller 
 activate View 
 Controller->Controller: HandleException(OperationError)
@@ -105,7 +143,11 @@ deactivate View
 note right of Utilizador #FFE6E8:Exit(1)
 deactivate Utilizador
 
+<<<<<<< HEAD
 else #F5FFFA SUCESSO: Execução da operação bem sucedida
+=======
+else SUCESSO: Execução da operação bem sucedida
+>>>>>>> krasner_pope_update
 activate Controller 
 activate View 
 Controller->View: ApresentarResultados()
@@ -127,12 +169,18 @@ end
 group CASO 4: Utilizador solicita término de programa a qualquer instante
 space
 activate Utilizador 
+<<<<<<< HEAD
 activate View 
 Utilizador-->View: Selecciona sair do programa
 deactivate Utilizador
 space
 activate Controller
 View-->Controller: Retorna comando inserido
+=======
+activate Controller 
+Utilizador-->Controller: Selecciona sair do programa
+activate View 
+>>>>>>> krasner_pope_update
 Controller->View: ImprimirMensagemDespedida()
 deactivate Controller
 activate Utilizador

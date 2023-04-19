@@ -1,5 +1,7 @@
-﻿using System.Data;
+﻿
 
+using AnaliseImagens;
+using System.Data;
 namespace AnaliseImagens
 {
     class Controller
@@ -7,20 +9,26 @@ namespace AnaliseImagens
         //Atributos da classe 
         private View view;
         private Model model; 
-        private string? command;
 
         //Construtor sem parâmetros
         public Controller() {
             view = new View(this); // Pass the Controller reference to the View
-            model = new Model(this, view); // Pass both the Controller and View references to the Model
+            model = new Model();
             view.Model = model; // Set the Model reference in the View
-            command = null;
+        }
 
-            List<string> availableCmds = model.ListarComandos();
-            view.ApresentarInstrucoes(availableCmds);
+        public void IniciarPrograma()
+        {
+      
+            view.ApresentarInstrucoes();
+            view.ImprimirPromptInserirInput("");
+            string command = Console.ReadLine();
+            LerComando(command);
+       
+        }
 
-            Console.WriteLine("Introduza um comando:");
-            command = Console.ReadLine();
+        private void LerComando(string command)
+        {
 
             try
             {
@@ -35,7 +43,25 @@ namespace AnaliseImagens
             
         }
 
+        private void HandleException(Exception excp)
+        {
+            if (excp is NoCommandFound || excp is CommandNotValid || excp is InvalidPath)
+            {
+                view.ImprimirPromptInserirInput(excp.Message + "\n");
+                string command = Console.ReadLine();
+                LerComando(command);
+            }
+            else if (excp is OperationError)
+            {
+                view.ImprimirMensagemErro(excp.Message);
+            }
+
+
+        }
+
 
      
     }
 }
+
+
