@@ -34,36 +34,46 @@ namespace AnaliseImagens
         }
 
         /*
-         *   Modelo executa comando. 
-         *   Podem ocorrer excepções que são geridas pelo método 'HandleException()' do Controller
+         *   Se comando for o comando de saída, View imprime mensagem de despedida e programa termina
+         *   Caso contrário, Model executa comando. 
+         *   Podem ocorrer excepções que são geridas pelo método 'HandleException()' do Controller. Caso não ocorram excepções,
+         *   a view apresenta os resultados. 
         */
         private void LerComando(string command)
         {
 
+            if (command.Equals("E"))
+            {
+                view.ImprimirMensagemDespedida();
+                return;
+            }
+
             try
             {
-               model.ExecutarComando(command);
-                
-            } catch (Exception excp)
+                model.ExecutarComando(command);
+                view.ApresentarResultados();
+
+            }
+            catch (Exception excp)
             {
                 HandleException(excp);
             }
 
-            
         }
 
 
-        /*
-         * Faz a gestão de excepções que possam ser lançadas pelo modelo. 
-         * Para as excepções NoCommandFound, CommandNotValid ou InvalidPath:
-         *  - View imprime um prompt com uma mensagem de erro específica de cada excepção e solicita novamente ao utilizador para inserir o comando
-         *  - Controller faz a leitura do comando inserido
-         *  
-         * Para a excepção OperationError:
-         *  - View imprime mensagem de erro e execução do programa termina
-         */
 
-        private void HandleException(Exception excp)
+    /*
+     * Faz a gestão de excepções que possam ser lançadas pelo modelo. 
+     * Para as excepções NoCommandFound, CommandNotValid ou InvalidPath:
+     *  - View imprime um prompt com uma mensagem de erro específica de cada excepção e solicita novamente ao utilizador para inserir o comando
+     *  - Controller faz a leitura do comando inserido
+     *  
+     * Para a excepção OperationError:
+     *  - View imprime mensagem de erro e execução do programa termina
+     */
+
+    private void HandleException(Exception excp)
         {
             if (excp is NoCommandFound || excp is CommandNotValid || excp is InvalidPath)
             {
