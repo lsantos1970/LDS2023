@@ -89,7 +89,7 @@ Model-->Controller:Retorna estado de execução do comando
 deactivate Model
 deactivate Controller
 
-alt #E5E4E2 FALHA: Execução da operação com erro
+alt FALHA: Execução da operação com erro
 activate Controller 
 activate View 
 Controller->Controller: HandleException(OperationError)
@@ -101,7 +101,7 @@ deactivate View
 note right of Utilizador #FFE6E8:Exit(1)
 deactivate Utilizador
 
-else #F5FFFA SUCESSO: Execução da operação bem sucedida
+else SUCESSO: Execução da operação bem sucedida
 activate Controller 
 activate View 
 Controller->View: ApresentarResultados()
