@@ -12,11 +12,17 @@ namespace AnaliseImagens
 
         //Construtor sem parâmetros
         public Controller() {
-            view = new View(this); // Pass the Controller reference to the View
+            view = new View(this); 
             model = new Model();
-            view.Model = model; // Set the Model reference in the View
+            view.Model = model; 
         }
 
+
+        /*
+         * View imprime as instruções com os comandos disponíveis. 
+         * View imprime um prompt a indicar ao utilizador para introduzir o comando.
+         * Controller faz a leitura do input do utilizador e passa o comando para o método auxiliar interno à classe 'LerComando()'
+        */
         public void IniciarPrograma()
         {
       
@@ -27,21 +33,35 @@ namespace AnaliseImagens
        
         }
 
+        /*
+         *   Modelo executa comando. 
+         *   Podem ocorrer excepções que são geridas pelo método 'HandleException()' do Controller
+        */
         private void LerComando(string command)
         {
 
             try
             {
-               model.ValidarComando(command);
                model.ExecutarComando(command);
                 
             } catch (Exception excp)
             {
-              view.HandleException(excp);
+                HandleException(excp);
             }
 
             
         }
+
+
+        /*
+         * Faz a gestão de excepções que possam ser lançadas pelo modelo. 
+         * Para as excepções NoCommandFound, CommandNotValid ou InvalidPath:
+         *  - View imprime um prompt com uma mensagem de erro específica de cada excepção e solicita novamente ao utilizador para inserir o comando
+         *  - Controller faz a leitura do comando inserido
+         *  
+         * Para a excepção OperationError:
+         *  - View imprime mensagem de erro e execução do programa termina
+         */
 
         private void HandleException(Exception excp)
         {

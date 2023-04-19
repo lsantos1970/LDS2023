@@ -33,7 +33,7 @@ namespace AnaliseImagens
           
             listCmds = new List<string> {"analisar..."};
 
-            // Initialize the dictionaries and add the corresponding delegates for each command
+            // Inicializar os dicionários e adicionar um delegado para cada comando
             commandValidators = new Dictionary<string, CommandValidator>
             {
                 { "analyze", ValidarComando }
@@ -45,6 +45,9 @@ namespace AnaliseImagens
             };
         }
 
+        /*
+         * Retorna a lista de comandos disponíveis  
+        */
         public List<string> ListarComandos() 
         {
             return listCmds;

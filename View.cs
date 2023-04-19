@@ -23,7 +23,7 @@ namespace AnaliseImagens
             controller = _controller;
         }
 
-        public void ApresentarInstrucoes(List<string> availableCommands)
+        public void ApresentarInstrucoes()
         {
             Console.WriteLine("Available commands:");
             foreach (string command in availableCommands)
@@ -32,31 +32,16 @@ namespace AnaliseImagens
             }
         }
 
+        /*
+         * Imprime um prompt que solicita ao utilizador para inserir o comando. Esse prompt pode ser precedido de uma mensagem
+         * de erro.
+        */
         public void ImprimirPromptInserirInput(string msg)
         {
             Console.WriteLine(msg + "Introduza um comando. Para sair, pressione 'E':");
         }
 
-        public void HandleException(Exception excp) {
-            if (excp is NoCommandFound)
-            {
-                Console.WriteLine(excp.Message);
-            }
-            else if (excp is CommandNotValid)
-            {
-                Console.WriteLine(excp.Message);
-            }
-            else if (excp is InvalidPath)
-            {
-                Console.WriteLine(excp.Message);
-
-            }
-            else if (excp is OperationError)
-            {
-                Console.WriteLine(excp.Message);
-                Environment.Exit(ExitCodes.ERROR_OPERATION_NOT_SUCCESSFUL);
-            }   
-        }
+       
 
     
         public void ApresentarResultados(object sender, ResultsEventArgs e)
