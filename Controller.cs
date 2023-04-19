@@ -12,9 +12,14 @@ namespace AnaliseImagens
 
         //Construtor sem parâmetros
         public Controller() {
-            view = new View(this); 
+            view = new View(); 
             model = new Model();
-            view.Model = model; 
+            
+            //Método ListarComandos() do Model subscreve ao evento PrecisoDasInstrucoes da view, sem que nenhum tenha conhecimento disso
+            view.PrecisoDasInstrucoes += model.ListarComandos;
+
+            //Método FornecerResultados() do Model subscreve ao evento PrecisoDosResultadosAnalise da view 
+            view.PrecisoDosResultadosAnalise += model.FornecerResultado;
         }
 
 
@@ -75,7 +80,7 @@ namespace AnaliseImagens
 
     private void HandleException(Exception excp)
         {
-            if (excp is NoCommandFound || excp is CommandNotValid || excp is InvalidPath)
+            if (excp is CommandNotValid || excp is InvalidPath)
             {
                 view.ImprimirPromptInserirInput(excp.Message + "\n");
                 string command = Console.ReadLine();

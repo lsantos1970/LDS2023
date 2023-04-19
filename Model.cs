@@ -14,14 +14,14 @@ namespace AnaliseImagens
         public double BluePercentage { get; set; }
     }
    
-    public delegate void ResultsHandler(object sender, ResultsEventArgs e);
+    public delegate void ResultsHandler(object sender, Events e);
     class Model
     {
         //Atributo da classe
         private List<string> listCmds;
       
         public delegate void CommandExecutor(string commandReceived);
-        public delegate void ResultsHandler(object sender, ResultsEventArgs e);
+        public delegate void ResultsHandler(object sender, Events e);
 
         //Declaração de evento
         public event ResultsHandler OnResultsAvailable;
@@ -46,16 +46,15 @@ namespace AnaliseImagens
         */
         protected virtual void RaiseResultsAvailable(ColorPercentages results)
         {
-            OnResultsAvailable?.Invoke(this, new ResultsEventArgs(results));
+            OnResultsAvailable?.Invoke(this, new Events(results));
         }
-
 
         /*
          * Retorna a lista de comandos disponíveis  
         */
-        public List<string> ListarComandos() 
+        public void ListarComandos(ref List<string> commands) 
         {
-            return listCmds;
+            commands = listCmds;
         }
 
 
@@ -75,7 +74,7 @@ namespace AnaliseImagens
             if (commandExecutors.TryGetValue(commandReceived, out CommandExecutor executor))
             {
                 executor(commandReceived);
-                OnResultsAvailable?.Invoke(this,  new ResultsEventArgs(FornecerResultado()));
+                OnResultsAvailable?.Invoke(this,  new Events(FornecerResultado()));
             }
             else
             {
@@ -84,17 +83,16 @@ namespace AnaliseImagens
         }
 
 
-       public ColorPercentages FornecerResultado()
+       public void FornecerResultado(ref ColorPercentages results)
         {
             // Calcular as percentagens de cada cor e retornar resultado como objecto do tipo ColorPercentages
-            ColorPercentages colorPercentages = new ColorPercentages
+            results = new ColorPercentages
             {
                 RedPercentage = 0.30,
                 GreenPercentage = 0.3,
                 BluePercentage = 0.4,
             };
 
-            return colorPercentages;
         }
         
      }

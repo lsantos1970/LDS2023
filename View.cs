@@ -8,23 +8,37 @@ namespace AnaliseImagens
         private Controller controller;
         private Model model;
 
-        public Model Model
-        {
-            get { return model; }
-            set
-            {
-                model = value;
-                model.OnResultsAvailable += ApresentarResultados;
-            }
-        }
-        //Construtor
-        public View(Controller _controller) 
-        {
-            controller = _controller;
-        }
+        /*
+         * O evento PrecisoDasInstrucoes pode ser respondido por delegados do tipo SolicitacaoInstrucoes, ou seja, pode ser 
+         * respondido por qualquer método que tenha a mesma assignatura que o delegado definido. 
+         * Quando o evento PrecisoDasInstrucoes é lançado, delegados que tenham subscrito a esse evento vão receber uma lista de string
+         * por referência que podem modificar
+         */
+        public delegate void SolicitacaoInstrucoes(ref List<string> commands);
+        public event SolicitacaoInstrucoes PrecisoDasInstrucoes;
 
+        /*
+         * O evento PrecisoDosResultadosAnalise pode ser respondido por delegados do tipo SolicitacaoResultadosAnalise.
+         * Quando o evento PrecisoDosResultadosAnalise é lançado, métodos que tenham a mesma assinatura que o delegado e tenham subscrito
+         * ao evento, vão receber um objecto do tipo ColorPercentagens que podem editar com os resultados
+         */
+        public delegate void SolicitacaoResultadosAnalise(ref ColorPercentages result);
+        public event SolicitacaoResultadosAnalise PrecisoDosResultadosAnalise; 
+
+
+        //Construtor
+        public View() {}
+
+
+        /*
+         *  Quando este método é chamado, lança um evento PrecisoDasInstrucoes
+         */
         public void ApresentarInstrucoes()
         {
+
+            List<string> availableCommands = new List<string>();
+            PrecisoDasInstrucoes(ref availableCommands);
+
             Console.WriteLine("Comandos disponíveis:");
             foreach (string command in availableCommands)
             {
@@ -62,10 +76,15 @@ namespace AnaliseImagens
         }
 
 
-
-        public void ApresentarResultados(object sender, ResultsEventArgs e)
+        /*
+         * Quando este método é chamado, é lançado um evento do tipo PrecisoDosResultadosAnalise ao qual um método do modelo irá 
+         * responder
+        */
+        public void ApresentarResultados()
         {
-             ColorPercentages results = e.Results;
+            ColorPercentages results = new ColorPercentages();
+            PrecisoDosResultadosAnalise(ref results);
+
 
             Console.WriteLine("Resultados:");
             Console.WriteLine($"Red: {results.RedPercentage}%");
