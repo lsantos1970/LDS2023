@@ -41,9 +41,28 @@ namespace AnaliseImagens
             Console.WriteLine(msg + "Introduza um comando. Para sair, pressione 'E':");
         }
 
-       
+        /*
+        * Mensagem de erro quando a operação não foi executada com sucesso e término do programa com código 
+        * ERROR_OPERATION_NOT_SUCCESSFUL
+        */
+        public void ImprimirMensagemErro(string message)
+        {
+            Console.WriteLine(message);
+            Environment.Exit(ExitCodes.ERROR_OPERATION_NOT_SUCCESSFUL);
+        }
 
-    
+
+        /*
+         * Mensagem de despedida quando utilizador solicita término do programa e saída com código SUCCESS
+         */ 
+        public void ImprimirMensagemDespedida()
+        {
+            Console.WriteLine("A terminar sessão, até breve!");
+            Environment.Exit(ExitCodes.SUCCESS);
+        }
+
+
+
         public void ApresentarResultados(object sender, ResultsEventArgs e)
         {
              ColorPercentages results = e.Results;
