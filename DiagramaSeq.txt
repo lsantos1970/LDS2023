@@ -5,6 +5,7 @@ participant Controller
 participant View
 participant Model
 
+group while(comando != Exit)
 activate Utilizador
 activate Controller
 Utilizador->Controller: IniciarPrograma()
@@ -40,7 +41,7 @@ group CASO 1: while(Comando inválido)
 space
 activate Controller 
 activate Model 
-Controller->Model: ExecutarComando(comando)
+Controller->Model: ValidarComando(comando)
 Controller<--Model: throw CommandNotValid
 deactivate Model
 Controller->Controller: HandleException(CommandNotValid)
@@ -63,7 +64,7 @@ group CASO2: while(Path para imagem inválido)
 space
 activate Controller 
 activate Model 
-Controller->Model: ExecutarComando(comando)
+Controller->Model: ValidarComando(comando)
 Controller<--Model: throw InvalidPath
 deactivate Model
 Controller->Controller: HandleException(InvalidPath)
@@ -88,13 +89,18 @@ group CASO 3: Comando e path de imagem válidos
 space 
 activate Model 
 activate Controller 
-Controller->Model: ExecutarComando(comando)
-Model-->Controller:Retorna estado de execução do comando
+Controller->Model: ValidarComando(comando)
+Model-->Controller:Retorna path da imagem e ação a executar
 deactivate Model
 deactivate Controller
 
 alt FALHA: Execução da operação com erro
 activate Controller 
+activate Model 
+Controller->Model: ExecutarComando(comando, path)
+Model-->Controller: throw OperationError
+deactivate Model
+space
 activate View 
 Controller->Controller: HandleException(OperationError)
 Controller->View: ImprimirMensagemErro()
@@ -107,24 +113,25 @@ deactivate Utilizador
 
 else SUCESSO: Execução da operação bem sucedida
 activate Controller 
-activate View 
-Controller->View: ApresentarResultados()
-deactivate Controller
 activate Model 
-View->Model: FornecerResultado()
-Model-->View:Retorna resultado
+Controller->Model: ExecutarComando(comando, path)
+deactivate Controller
+space
+activate View
+Model-->View: Retorna resultados
 deactivate Model
+space
 space
 activate Utilizador 
 Utilizador <<-- View: Mostra estatísticas ou path para a imagem alterada
 deactivate View
-note right of Utilizador #F5FFFA:Exit(0)
 deactivate Utilizador
 end
 end
+end
 
 
-group CASO 4: Utilizador solicita término de programa a qualquer instante
+group Comando == Exit
 space
 activate Utilizador 
 activate View 
