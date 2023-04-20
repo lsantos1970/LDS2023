@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using static AnaliseImagens.Model;
 
 
 namespace AnaliseImagens
@@ -19,13 +20,13 @@ namespace AnaliseImagens
     {
         //Atributo da classe
         private List<string> listCmds;
-      
+             
+        public delegate void CommandValidator(string commandReceived);
         public delegate void CommandExecutor(string commandReceived);
-        public delegate void ResultsHandler(object sender, Events e);
-
-        //Declaração de evento
+        public delegate void ResultsHandler(object sender, ResultsEventArgs e);
         public event ResultsHandler OnResultsAvailable;
 
+        private Dictionary<string, CommandValidator> commandValidators;
         private Dictionary<string, CommandExecutor> commandExecutors;
 
         //Construtor
@@ -35,6 +36,11 @@ namespace AnaliseImagens
             listCmds = new List<string> {"analisar..."};
 
             // Inicializar o dicionário e adicionar um delegado para cada comando
+            commandValidators = new Dictionary<string, CommandValidator>
+            {
+                { "analyze", ValidarComando }
+            };
+
             commandExecutors = new Dictionary<string, CommandExecutor>
             {
                 { "analyze", ExecutarComando }
@@ -46,8 +52,9 @@ namespace AnaliseImagens
         */
         protected virtual void RaiseResultsAvailable(ColorPercentages results)
         {
-            OnResultsAvailable?.Invoke(this, new Events(results));
+            OnResultsAvailable?.Invoke(this, new ResultsEventArgs(results));
         }
+
 
         /*
          * Retorna a lista de comandos disponíveis  
@@ -57,6 +64,18 @@ namespace AnaliseImagens
             commands = listCmds;
         }
 
+
+        public void ValidarComando(string commandReceived)
+        {
+            if (commandValidators.TryGetValue(commandReceived, out CommandValidator validator))
+            {
+                validator(commandReceived);
+            }
+            else
+            {
+                throw new CommandNotValid(commandReceived);
+            }
+        }
 
         /*
          * Executa comando introduzido pelo utilizador. Se comando for executado com sucesso, o evento 'OnResultsAvailable' é lançado
@@ -71,15 +90,17 @@ namespace AnaliseImagens
              *  - Se operação não foi executada com sucesso, lança a excepção OperationError
              */
 
+
             if (commandExecutors.TryGetValue(commandReceived, out CommandExecutor executor))
             {
                 executor(commandReceived);
-                OnResultsAvailable?.Invoke(this,  new Events(FornecerResultado()));
+                OnResultsAvailable?.Invoke(this, new ResultsEventArgs(FornecerResultado()));
             }
             else
             {
                 throw new CommandNotValid(commandReceived);
             }
+
         }
 
 
