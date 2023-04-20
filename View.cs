@@ -4,9 +4,6 @@ namespace AnaliseImagens
 {
     class View
     {
-        //Atributos
-        private Controller controller;
-        private Model model;
 
         /*
          * O evento OnInstructionsNeeded pode ser respondido por delegados do tipo InstructionsHandler, ou seja, pode ser 
