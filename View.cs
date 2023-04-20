@@ -68,22 +68,6 @@ namespace AnaliseImagens
             Environment.Exit(ExitCodes.SUCCESS);
         }
 
-        /*
-        * ############################## CÓDIGO BRUNO ##########################################3
-        */
-
-        public Model Model
-        {
-            get { return model; }
-            set
-            {
-                model = value;
-                model.OnResultsAvailable += ApresentarResultados;
-            }
-
-
-        }
-
 
         public void ApresentarResultados (object sender, ResultsEventArgs e)
         {
