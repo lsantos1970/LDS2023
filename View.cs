@@ -17,13 +17,7 @@ namespace AnaliseImagens
         public delegate void SolicitacaoInstrucoes(ref List<string> commands);
         public event SolicitacaoInstrucoes PrecisoDasInstrucoes;
 
-        /*
-         * O evento PrecisoDosResultadosAnalise pode ser respondido por delegados do tipo SolicitacaoResultadosAnalise.
-         * Quando o evento PrecisoDosResultadosAnalise é lançado, métodos que tenham a mesma assinatura que o delegado e tenham subscrito
-         * ao evento, vão receber um objecto do tipo ColorPercentagens que podem editar com os resultados
-         */
-        public delegate void SolicitacaoResultadosAnalise(ref ColorPercentages result);
-        public event SolicitacaoResultadosAnalise PrecisoDosResultadosAnalise; 
+
 
 
         //Construtor
@@ -73,26 +67,6 @@ namespace AnaliseImagens
             Console.WriteLine("A terminar sessão, até breve!");
             Environment.Exit(ExitCodes.SUCCESS);
         }
-
-
-        /*
-         * Quando este método é chamado, é lançado um evento do tipo PrecisoDosResultadosAnalise ao qual um método do modelo irá 
-         * responder
-        */
-        public void ApresentarResultados()
-        {
-            ColorPercentages results = new ColorPercentages();
-            PrecisoDosResultadosAnalise(ref results);
-
-
-            Console.WriteLine("Resultados:");
-            Console.WriteLine($"Red: {results.RedPercentage}%");
-            Console.WriteLine($"Green: {results.GreenPercentage}%");
-            Console.WriteLine($"Blue: {results.BluePercentage}%");
-
-            Environment.Exit(ExitCodes.SUCCESS);
-        }
-
 
         /*
         * ############################## CÓDIGO BRUNO ##########################################3
