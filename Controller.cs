@@ -18,8 +18,8 @@ namespace AnaliseImagens
             //Método ListarComandos() do Model subscreve ao evento PrecisoDasInstrucoes da view, sem que nenhum tenha conhecimento disso
             view.PrecisoDasInstrucoes += model.ListarComandos;
 
-            //Método FornecerResultados() do Model subscreve ao evento PrecisoDosResultadosAnalise da view 
-            view.PrecisoDosResultadosAnalise += model.FornecerResultado;
+            //Método ApresentarResultados() da View subscreve ao evento OnResultsAvailable() do Model 
+            model.OnResultsAvailable += view.ApresentarResultados;
         }
 
 
@@ -33,9 +33,12 @@ namespace AnaliseImagens
       
             view.ApresentarInstrucoes();
             view.ImprimirPromptInserirInput("");
-            string command = Console.ReadLine();
-            LerComando(command);
-       
+            string command = "";
+
+            do{
+                command = Console.ReadLine();
+                LerComando(command);       
+            } while (!command.Equals("E")) ;
         }
 
         /*
@@ -55,9 +58,9 @@ namespace AnaliseImagens
 
             try
             {
-                model.ExecutarComando(command);
-                view.ApresentarResultados();
-
+                string path = "", cmd = "";
+                model.ValidarComando(command, ref cmd, ref path);
+                model.ExecutarComando(cmd, path);
             }
             catch (Exception excp)
             {

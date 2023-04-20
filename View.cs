@@ -119,7 +119,6 @@ namespace AnaliseImagens
             Console.WriteLine($"Green: {results.GreenPercentage}%");
             Console.WriteLine($"Blue: {results.BluePercentage}%");
 
-            model.FornecerResultado();
             Environment.Exit(ExitCodes.SUCCESS);
         }
     }
