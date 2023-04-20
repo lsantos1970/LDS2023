@@ -25,12 +25,13 @@ namespace AnaliseImagens
         private Dictionary<string, CommandExecutor> commandExecutors;
 
         /*
-         * O evento OnResultsAvailable pode ser respondido por delegados do tipo ResultsHandler, ou seja, pode ser 
+         * O evento OnResultsAvailable pode ser respondido por delegados do tipo AnalysisResultsHandler, ou seja, pode ser 
          * respondido por qualquer método que tenha a mesma assignatura que o delegado definido. 
-         * Quando o evento OnResultsAvailable é lançado, delegados que tenham subscrito a esse evento vão  
+         * Quando o evento OnResultsAvailable é lançado, delegados que tenham subscrito a esse evento vão receber e terão acesso
+         * aos resultados
          */
-        public delegate void ResultsHandler(object sender, AnalysisResultsEventArgs e);
-        public event ResultsHandler OnResultsAvailable;
+        public delegate void AnalysisResultsHandler(object sender, AnalysisResultsEventArgs e);
+        public event AnalysisResultsHandler OnResultsAvailable;
 
        
 
