@@ -108,6 +108,9 @@ namespace AnaliseImagens
                 BluePercentage = 0.4,
             };
 
+            //Quando os resultados estão prontos, é lançado o evento
+            RaiseResultsAvailable(results);
+
             /* 
              * ---------------- CODIGO BRUNO ---------------------
              * 
