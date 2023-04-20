@@ -16,7 +16,7 @@ namespace AnaliseImagens
             model = new Model();
             
             //Método ListarComandos() do Model subscreve ao evento PrecisoDasInstrucoes da view, sem que nenhum tenha conhecimento disso
-            view.PrecisoDasInstrucoes += model.ListarComandos;
+            view.OnInstructionsNeeded += model.ListarComandos;
 
             //Método ApresentarResultados() da View subscreve ao evento OnResultsAvailable() do Model 
             model.OnResultsAvailable += view.ApresentarResultados;

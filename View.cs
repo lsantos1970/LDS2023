@@ -9,13 +9,13 @@ namespace AnaliseImagens
         private Model model;
 
         /*
-         * O evento PrecisoDasInstrucoes pode ser respondido por delegados do tipo SolicitacaoInstrucoes, ou seja, pode ser 
+         * O evento OnInstructionsNeeded pode ser respondido por delegados do tipo InstructionsHandler, ou seja, pode ser 
          * respondido por qualquer método que tenha a mesma assignatura que o delegado definido. 
-         * Quando o evento PrecisoDasInstrucoes é lançado, delegados que tenham subscrito a esse evento vão receber uma lista de string
+         * Quando o evento OnInstructionsNeeded é lançado, delegados que tenham subscrito a esse evento vão receber uma lista de string
          * por referência que podem modificar
          */
-        public delegate void SolicitacaoInstrucoes(ref List<string> commands);
-        public event SolicitacaoInstrucoes PrecisoDasInstrucoes;
+        public delegate void InstructionsHandler(ref List<string> commands);
+        public event InstructionsHandler OnInstructionsNeeded;
 
 
 
@@ -24,13 +24,13 @@ namespace AnaliseImagens
         public View() {}
 
         /*
-         *  Quando este método é chamado, lança um evento PrecisoDasInstrucoes
+         *  Quando este método é chamado, lança um evento OnInstructionsNeeded
          */
         public void ApresentarInstrucoes()
         {
 
             List<string> availableCommands = new List<string>();
-            PrecisoDasInstrucoes(ref availableCommands);
+            OnInstructionsNeeded(ref availableCommands);
 
             Console.WriteLine("Comandos disponíveis:");
             foreach (string command in availableCommands)
@@ -68,7 +68,10 @@ namespace AnaliseImagens
             Environment.Exit(ExitCodes.SUCCESS);
         }
 
-
+        /*
+         * Este método subscreve a um evento que é lançado quando os resultados estão prontos. Quando isso ocorre, 
+         * recebe os resultados como argumento e imprime-os
+         */
         public void ApresentarResultados (object sender, ResultsEventArgs e)
         {
             ColorPercentages results = e.Results;
