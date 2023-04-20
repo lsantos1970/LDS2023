@@ -7,7 +7,7 @@ using static AnaliseImagens.Model;
 namespace AnaliseImagens
 {
 
-    //Definição do objecto ColorPercentages
+    //Definição da classe ColorPercentages
     public class ColorPercentages
     {
         public double RedPercentage { get; set; }
@@ -17,17 +17,19 @@ namespace AnaliseImagens
    
     class Model
     {
-        //Atributo da classe
+        //Atributos da classe
         private List<string> listCmds;
-             
-       /* ------------------------- CODIGO BRUNO -------------------------------------
-        * public delegate void CommandValidator(string commandReceived);
-        public delegate void CommandExecutor(string commandReceived);
-        private Dictionary<string, CommandValidator> commandValidators;
+        public delegate void CommandValidator(string path);
+        public delegate ColorPercentages CommandExecutor(string path);
+        private Dictionary<string, CommandValidator> commandValidators; 
         private Dictionary<string, CommandExecutor> commandExecutors;
-       */
 
-        public delegate void ResultsHandler(object sender, ResultsEventArgs e);
+        /*
+         * O evento OnResultsAvailable pode ser respondido por delegados do tipo ResultsHandler, ou seja, pode ser 
+         * respondido por qualquer método que tenha a mesma assignatura que o delegado definido. 
+         * Quando o evento OnResultsAvailable é lançado, delegados que tenham subscrito a esse evento vão  
+         */
+        public delegate void ResultsHandler(object sender, AnalysisResultsEventArgs e);
         public event ResultsHandler OnResultsAvailable;
 
        
@@ -38,26 +40,25 @@ namespace AnaliseImagens
           
             listCmds = new List<string> {"analisar..."};
 
-            // Inicializar o dicionário e adicionar um delegado para cada comando
-            /*
-             * ----------------------------- CÓDIGO BRUNO ----------------------------------
-             * commandValidators = new Dictionary<string, CommandValidator>
+            //Os dicionários são inicializados associando a cada comando uma função que irá validar ou executar o comando
+             commandValidators = new Dictionary<string, CommandValidator>
             {
-                { "analyze", ValidarComando }
+                { "analyze", ValidateAnalyzeCmd }
             };
 
             commandExecutors = new Dictionary<string, CommandExecutor>
             {
-                { "analyze", ExecutarComando }
-            };*/
+                { "analyze", ExecuteAnalyzeCmd }
+            };
         }
+
 
         /*
          * Implementação do método que lança o evento 'OnResultsAvailable'
         */
         protected virtual void RaiseResultsAvailable(ColorPercentages results)
         {
-            OnResultsAvailable?.Invoke(this, new ResultsEventArgs(results));
+            OnResultsAvailable?.Invoke(this, new AnalysisResultsEventArgs(results));
         }
 
 
@@ -82,25 +83,50 @@ namespace AnaliseImagens
           *  - Se operação não foi executada com sucesso, lança a excepção OperationError
           */
 
-            /*
-             * ------------------------- CODIGO BRUNO ------------------------------------------- 
-             * if (commandValidators.TryGetValue(commandReceived, out CommandValidator validator))
+               
+            if (commandValidators.TryGetValue(commandReceived, out CommandValidator validator))
             {
                 validator(commandReceived);
             }
             else
             {
                 throw new CommandNotValid(commandReceived);
-            }*/
+            }
         }
 
         /*
-         * Executa comando introduzido pelo utilizador. Se comando for executado com sucesso, o evento 'OnResultsAvailable' é lançado
+         * Executa comando introduzido pelo utilizador. 
+         * Se comando for executado com sucesso, o evento 'OnResultsAvailable' é lançado. Um método da View subscreve a este método
+         * Se o comando não for executado com sucesso, é lançada uma excepção e o controlo retorna ao Controller que irá lidar com essa
+         * excepção
          */
         public void ExecutarComando(string cmd, string path)
         {
+       
+             if (commandExecutors.TryGetValue(cmd, out CommandExecutor executor))
+             {
+                //Quando os resultados estão prontos, é lançado o evento
+                ColorPercentages results = executor(path);
+                RaiseResultsAvailable(results);
+            }
+             else
+             {
+                 throw new OperationError(cmd);
+             }
 
-            // Calcular as percentagens de cada cor e retornar resultado como objecto do tipo ColorPercentages
+        }
+
+        private void ValidateAnalyzeCmd (string path)
+        {
+
+        }
+
+
+        /* ---------------------------- TO DO -------------------------------------
+        * Função que calcula as percentagens de cada cor e retornar resultado como objecto do tipo ColorPercentages
+        */
+        private ColorPercentages ExecuteAnalyzeCmd (string path)
+        {
             ColorPercentages results = new ColorPercentages
             {
                 RedPercentage = 0.30,
@@ -108,27 +134,11 @@ namespace AnaliseImagens
                 BluePercentage = 0.4,
             };
 
-            //Quando os resultados estão prontos, é lançado o evento
-            RaiseResultsAvailable(results);
-
-            /* 
-             * ---------------- CODIGO BRUNO ---------------------
-             * 
-             * if (commandExecutors.TryGetValue(commandReceived, out CommandExecutor executor))
-             {
-                 executor(commandReceived);
-                 OnResultsAvailable?.Invoke(this, new ResultsEventArgs(FornecerResultado()));
-             }
-             else
-             {
-                 throw new CommandNotValid(commandReceived);
-             }*/
-
+            return results;
         }
 
 
-      
-        
+
      }
 
 }

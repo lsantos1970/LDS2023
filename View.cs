@@ -17,9 +17,6 @@ namespace AnaliseImagens
         public delegate void InstructionsHandler(ref List<string> commands);
         public event InstructionsHandler OnInstructionsNeeded;
 
-
-
-
         //Construtor
         public View() {}
 
@@ -72,7 +69,7 @@ namespace AnaliseImagens
          * Este método subscreve a um evento que é lançado quando os resultados estão prontos. Quando isso ocorre, 
          * recebe os resultados como argumento e imprime-os
          */
-        public void ApresentarResultados (object sender, ResultsEventArgs e)
+        public void ApresentarResultados (object sender, AnalysisResultsEventArgs e)
         {
             ColorPercentages results = e.Results;
             Console.WriteLine("Resultados:");
