@@ -2,6 +2,7 @@
 
 using AnaliseImagens;
 using System.Data;
+using System.Security.Cryptography;
 
 namespace AnaliseImagens
 {
@@ -13,17 +14,24 @@ namespace AnaliseImagens
 
         //Construtor sem parâmetros
         public Controller() {
-            model = new Model(this, view);
-            view = new View(this, model);
+            model = new Model(view);
+            view = new View(model);
         }
 
         public void IniciarPrograma()
         {
       
             view.ApresentarInstrucoes();
-            view.ImprimirPromptInserirInput("");
-            string command = Console.ReadLine();
-            LerComando(command);
+
+            string command = "";
+
+            do
+            {
+                view.ImprimirPromptInserirInput("");
+                command = Console.ReadLine();
+                LerComando(command);
+            } while (!command.Equals("E"));
+            
        
         }
 
@@ -38,9 +46,10 @@ namespace AnaliseImagens
 
             try
             {
-                model.ExecutarComando(command);
-                view.ApresentarResultados();
-
+                string cmd = "", path = "";
+                model.ValidarComando(command, ref cmd, ref path);
+                model.ExecutarComando(cmd, path);
+          
             }
             catch (Exception excp)
             {

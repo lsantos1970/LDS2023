@@ -1,11 +1,12 @@
-title Equipa C#1 - Aplicação de análise e edição de fotografias com framework AForge.NET
+title Equipa C#1 - Diagrama de sequência variante Krasner & Pope actualizado
 
 actor Utilizador
 participant Controller
 participant View
 participant Model
 
-
+group while(comando != Exit)
+space
 activate Utilizador 
 Utilizador->Controller:IniciarPrograma()
 activate Controller 
@@ -37,7 +38,7 @@ group CASO 1: while(Comando inválido)
 space
 activate Controller 
 activate Model 
-Controller->Model: ExecutarComando(comando)
+Controller->Model: ValidarComando(comando)
 Controller<--Model: throw CommandNotValid
 deactivate Model
 Controller->Controller: HandleException(CommandNotValid)
@@ -62,7 +63,7 @@ group CASO2: while(Path para imagem inválido)
 space
 activate Controller 
 activate Model 
-Controller->Model: ExecutarComando(comando)
+Controller->Model: ValidarComando(comando)
 Controller<--Model: throw InvalidPath
 deactivate Model
 Controller->Controller: HandleException(InvalidPath)
@@ -84,15 +85,19 @@ group CASO 3: Comando e path de imagem válidos
 space 
 activate Model 
 activate Controller 
-Controller->Model: ExecutarComando(comando)
-Model-->Controller:Retorna estado de execução do comando
+Controller->Model: ValidarComando(comando)
+Controller<--Model: Retorna path da imagem e ação a executar
 deactivate Model
 deactivate Controller
 
 alt FALHA: Execução da operação com erro
 activate Controller 
-activate View 
+activate Model 
+Controller->Model: ExecutarComando(comando, path)
+Model-->Controller: throw OperationError
+deactivate Model
 Controller->Controller: HandleException(OperationError)
+activate View
 Controller->View: ImprimirMensagemErro()
 deactivate Controller
 activate Utilizador 
@@ -103,23 +108,22 @@ deactivate Utilizador
 
 else SUCESSO: Execução da operação bem sucedida
 activate Controller 
-activate View 
-Controller->View: ApresentarResultados()
-deactivate Controller
 activate Model 
-View->Model: FornecerResultado()
-Model-->View:Retorna resultado
+Controller->Model: ExecutarComando(comando, path)
+deactivate Controller
+space
+activate View
+Model->View: ApresentarResultados()
 deactivate Model
 space
 activate Utilizador 
 Utilizador <<-- View: Mostra estatísticas ou path para a imagem alterada
 deactivate View
-note right of Utilizador #F5FFFA:Exit(0)
 deactivate Utilizador
 end
 end
-
-group CASO 4: Utilizador solicita término de programa a qualquer instante
+end
+group Comando == Exit
 space
 activate Utilizador 
 activate Controller 
@@ -138,5 +142,4 @@ destroy Utilizador
 destroy Controller
 destroy View
 destroy Model
-
 

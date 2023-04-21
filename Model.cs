@@ -6,13 +6,11 @@ namespace AnaliseImagens
     {
         //Atributos
         private List<string> listCmds;
-        private Controller controller;
         private View view;
 
         //Construtor
-        public Model(Controller _controller, View _view)
+        public Model(View _view)
         {
-            controller = _controller;
             view = _view;
         }
 
@@ -22,10 +20,14 @@ namespace AnaliseImagens
             return listCmds;
         }
 
-        public void ExecutarComando(string commandReceived) { }
+
+        public void ValidarComando(string commandReceived, ref string cmd, ref string path) { }
+        public void ExecutarComando(string cmd, string path) {
+
+            view.ApresentarResultados();
+        }
 
 
-        public void FornecerResultado() { }
         
      }
 

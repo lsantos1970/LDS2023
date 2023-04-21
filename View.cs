@@ -5,13 +5,11 @@ namespace AnaliseImagens
     class View
     {
         //Atributos
-        private Controller controller;
         private Model model;
 
 
         //Construtor
-        public View(Controller _controller, Model _model) {
-            controller = _controller;
+        public View(Model _model) {
             model = _model; 
         }
 
@@ -28,7 +26,6 @@ namespace AnaliseImagens
 
         public void ApresentarResultados() {
 
-            model.FornecerResultado();
             Environment.Exit(ExitCodes.SUCCESS);
 
         }
