@@ -34,7 +34,6 @@ namespace AnaliseImagens
 
         public void ApresentarResultados() {
 
-            model.FornecerResultado();
             Environment.Exit(ExitCodes.SUCCESS);
 
         }

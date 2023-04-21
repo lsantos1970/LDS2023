@@ -12,15 +12,21 @@ namespace AnaliseImagens
 
         //Construtor sem parâmetros
         public Controller() {
-            model = new Model(this, view);
+            model = new Model(view);
             view = new View(this, model);  
         }
 
         public void IniciarPrograma()
         {
             view.ApresentarInstrucoes();
-            string command = view.ImprimirPromptInserirInput("");
-            LerComando(command);
+
+            string command = "";
+            do
+            {
+                command = view.ImprimirPromptInserirInput("");
+                LerComando(command);
+            } while (!command.Equals("E"));
+            
         }
 
         private void LerComando(string command)
@@ -34,9 +40,9 @@ namespace AnaliseImagens
 
             try
             {
-                model.ExecutarComando(command);
-                view.ApresentarResultados();
-
+                string cmd = "", path = "";
+                model.ValidarComando(command, ref cmd, ref path);
+                model.ExecutarComando(cmd, path);
             }
             catch (Exception excp)
             {
