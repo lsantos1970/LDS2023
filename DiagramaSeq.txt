@@ -118,7 +118,7 @@ Controller->Model: ExecutarComando(comando, path)
 deactivate Controller
 space
 activate View
-Model-->View: Retorna resultados
+Model-->View: ApresentarResultados()
 deactivate Model
 space
 space
