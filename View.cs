@@ -38,10 +38,22 @@ namespace AnaliseImagens
 
         }
 
-        public void ImprimirMensagemErro(string message)
+
+        public void HandleException(Exception excp)
         {
-            Console.WriteLine(message);
-            Environment.Exit(ExitCodes.ERROR_OPERATION_NOT_SUCCESSFUL);
+            if (excp is NoCommandFound || excp is CommandNotValid || excp is InvalidPath)
+            {
+
+                string command = ImprimirPromptInserirInput(excp.Message + "\n");
+                controller.LerComando(command);
+            }
+            else if (excp is OperationError)
+            {
+                Console.WriteLine(excp.Message);
+                Environment.Exit(ExitCodes.ERROR_OPERATION_NOT_SUCCESSFUL);
+            }
+
+
         }
 
         public void ImprimirMensagemDespedida()

@@ -12,60 +12,32 @@ namespace AnaliseImagens
 
         //Construtor sem parâmetros
         public Controller() {
+            view = new View(this, model);
             model = new Model(view);
-            view = new View(this, model);  
         }
 
         public void IniciarPrograma()
         {
             view.ApresentarInstrucoes();
-
-            string command = "";
-            do
-            {
-                command = view.ImprimirPromptInserirInput("");
-                LerComando(command);
-            } while (!command.Equals("E"));
+            string command = view.ImprimirPromptInserirInput("");
+            LerComando(command);
             
         }
 
-        private void LerComando(string command)
+        public void LerComando(string command)
         {
-
-            if(command.Equals("E"))
+            
+            if (command.Equals("E"))
             {
                 view.ImprimirMensagemDespedida();
-                return;
-            } 
-
-            try
+            } else
             {
-                string cmd = "", path = "";
-                model.ValidarComando(command, ref cmd, ref path);
-                model.ExecutarComando(cmd, path);
-            }
-            catch (Exception excp)
-            {
-                HandleException(excp);
+                model.ExecutarComando(command);
             }
 
         }
 
-        private void HandleException(Exception excp)
-        {
-            if (excp is NoCommandFound || excp is CommandNotValid || excp is InvalidPath)
-            {
-
-                string command = view.ImprimirPromptInserirInput(excp.Message + "\n");
-                LerComando(command);
-            }
-            else if (excp is OperationError)
-            {
-                view.ImprimirMensagemErro(excp.Message);
-            }
-
-
-        }
+        
 
     }
 }

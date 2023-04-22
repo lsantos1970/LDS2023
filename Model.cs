@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Reflection.Metadata;
 
 namespace AnaliseImagens
 {
@@ -9,7 +10,7 @@ namespace AnaliseImagens
         private View view;
 
         //Construtor
-        public Model( View _view)
+        public Model(View _view)
         {
             view = _view;
         }
@@ -20,10 +21,20 @@ namespace AnaliseImagens
             return listCmds;
         }
 
-        public void ValidarComando(string commandReceived, ref string cmd, ref string path) { }
+        public void ExecutarComando(string commandReceived) {
+            /*
+             * Se comando for inválido --> throw CommandNotValid
+             * 
+             * Se path inválido --> throw InvalidPath
+             * 
+             * Se operação não foi executada com sucesso --> throw OperationError
+             * 
+             * 
+             * view.HandleException(excp)
+             * 
+             */
 
-        public void ExecutarComando(string cmd, string path) {
-
+            //Se for bem sucedido
             view.ApresentarResultados();
         }
         
