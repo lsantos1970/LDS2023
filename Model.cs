@@ -23,14 +23,19 @@ namespace AnaliseImagens
 
         public void ExecutarComando(string commandReceived) {
             /*
-             * Se comando for inválido --> throw CommandNotValid
+             * Se comando for inválido --> create CommandNotValid
              * 
-             * Se path inválido --> throw InvalidPath
+             * CommandNotValid ex = new CommandNotValid()
+             * view.HandleException(ex)
              * 
-             * Se operação não foi executada com sucesso --> throw OperationError
+             * Se path inválido --> create InvalidPath
              * 
+             * * InvalidPath ex = new InvalidPath()
+             * view.HandleException(ex)
              * 
-             * view.HandleException(excp)
+             * Se operação não foi executada com sucesso --> create OperationError
+             * OperationError ex = new OperationError()
+             * view.HandleException(ex)
              * 
              */
 
