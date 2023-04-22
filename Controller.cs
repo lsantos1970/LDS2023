@@ -46,9 +46,7 @@ namespace AnaliseImagens
 
             try
             {
-                string cmd = "", path = "";
-                model.ValidarComando(command, ref cmd, ref path);
-                model.ExecutarComando(cmd, path);
+                model.ExecutarComando(command);
           
             }
             catch (Exception excp)

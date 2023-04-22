@@ -38,7 +38,7 @@ group CASO 1: while(Comando inválido)
 space
 activate Controller 
 activate Model 
-Controller->Model: ValidarComando(comando)
+Controller->Model: ExecutarComando(comando)
 Controller<--Model: throw CommandNotValid
 deactivate Model
 Controller->Controller: HandleException(CommandNotValid)
@@ -63,7 +63,7 @@ group CASO2: while(Path para imagem inválido)
 space
 activate Controller 
 activate Model 
-Controller->Model: ValidarComando(comando)
+Controller->Model: ExecutarComando(comando)
 Controller<--Model: throw InvalidPath
 deactivate Model
 Controller->Controller: HandleException(InvalidPath)
@@ -85,15 +85,13 @@ group CASO 3: Comando e path de imagem válidos
 space 
 activate Model 
 activate Controller 
-Controller->Model: ValidarComando(comando)
-Controller<--Model: Retorna path da imagem e ação a executar
+Controller->Model: ExecutarComando(comando)
 deactivate Model
 deactivate Controller
 
 alt FALHA: Execução da operação com erro
 activate Controller 
 activate Model 
-Controller->Model: ExecutarComando(comando, path)
 Model-->Controller: throw OperationError
 deactivate Model
 Controller->Controller: HandleException(OperationError)
@@ -107,11 +105,8 @@ note right of Utilizador #FFE6E8:Exit(1)
 deactivate Utilizador
 
 else SUCESSO: Execução da operação bem sucedida
-activate Controller 
 activate Model 
-Controller->Model: ExecutarComando(comando, path)
-deactivate Controller
-space
+
 activate View
 Model->View: ApresentarResultados()
 deactivate Model
