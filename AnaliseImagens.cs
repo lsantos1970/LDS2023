@@ -12,7 +12,6 @@
         //Iniciar o programa
         static void Main(string[] args)
         {
-            AnaliseImagens app = new AnaliseImagens();
             Controller controller = new Controller();
             controller.IniciarPrograma();
 
