@@ -1,60 +1,80 @@
-﻿
+﻿using AnaliseImagens;
 
 namespace AnaliseImagens
 {
     class View
     {
-        //Atributos
-        private Controller controller;
-        private Model model;
 
+        /*
+         * O evento OnInstructionsNeeded pode ser respondido por delegados do tipo InstructionsHandler, ou seja, pode ser 
+         * respondido por qualquer método que tenha a mesma assignatura que o delegado definido. 
+         * Quando o evento OnInstructionsNeeded é lançado, delegados que tenham subscrito a esse evento vão receber uma lista de string
+         * por referência que podem modificar
+         */
+        public delegate void InstructionsHandler(ref List<string> commands);
+        public event InstructionsHandler OnInstructionsNeeded;
 
         //Construtor
-        public View(Controller _controller, Model _model) {
-            controller = _controller;
-            model = _model; 
+        public View() {}
+
+        /*
+         *  Quando este método é chamado, lança um evento OnInstructionsNeeded
+         */
+        public void ApresentarInstrucoes()
+        {
+
+            List<string> availableCommands = new List<string>();
+            OnInstructionsNeeded(ref availableCommands);
+
+            Console.WriteLine("Comandos disponíveis:");
+            foreach (string command in availableCommands)
+            {
+                Console.WriteLine($"- {command}");
+            }
         }
 
-        public void ApresentarInstrucoes(List <string> availableCommands) { }
-
-        public void HandleException(Exception excp) {
-            if (excp is NoCommandFound)
-            {
-                Console.WriteLine(excp.Message);
-                Environment.Exit(ExitCodes.ERROR_NO_COMMAND);
-            }
-            else if (excp is CommandNotValid)
-            {
-                Console.WriteLine(excp.Message);
-                Environment.Exit(ExitCodes.ERROR_INVALID_COMMAND);
-            }
-            else if (excp is InvalidPath)
-            {
-                Console.WriteLine(excp.Message);
-                Environment.Exit(ExitCodes.ERROR_INVALID_IMAGE);
-
-            }
-            else if (excp is OperationError)
-            {
-                Console.WriteLine(excp.Message);
-                Environment.Exit(ExitCodes.ERROR_OPERATION_NOT_SUCCESSFUL);
-            }
-
-           
+        /*
+         * Imprime um prompt que solicita ao utilizador para inserir o comando. Esse prompt pode ser precedido de uma mensagem
+         * de erro.
+        */
+        public void ImprimirPromptInserirInput(string msg)
+        {
+            Console.WriteLine(msg + "Introduza um comando. Para sair, pressione 'E':");
         }
 
-      
+        /*
+        * Mensagem de erro quando a operação não foi executada com sucesso e término do programa com código 
+        * ERROR_OPERATION_NOT_SUCCESSFUL
+        */
+        public void ImprimirMensagemErro(string message)
+        {
+            Console.WriteLine(message);
+            Environment.Exit(ExitCodes.ERROR_OPERATION_NOT_SUCCESSFUL);
+        }
 
-        public void ApresentarResultados() {
 
-            model.FornecerResultado();
+        /*
+         * Mensagem de despedida quando utilizador solicita término do programa e saída com código SUCCESS
+         */ 
+        public void ImprimirMensagemDespedida()
+        {
+            Console.WriteLine("A terminar sessão, até breve!");
             Environment.Exit(ExitCodes.SUCCESS);
-
         }
 
-        
+        /*
+         * Este método subscreve a um evento que é lançado quando os resultados estão prontos. Quando isso ocorre, 
+         * recebe os resultados como argumento e imprime-os
+         */
+        public void ApresentarResultados (object sender, AnalysisResultsEventArgs e)
+        {
+            ColorPercentages results = e.Results;
+            Console.WriteLine("Resultados:");
+            Console.WriteLine($"Red: {results.RedPercentage}%");
+            Console.WriteLine($"Green: {results.GreenPercentage}%");
+            Console.WriteLine($"Blue: {results.BluePercentage}%");
 
-
-
+            Environment.Exit(ExitCodes.SUCCESS);
+        }
     }
 }
