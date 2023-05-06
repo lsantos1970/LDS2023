@@ -1,0 +1,49 @@
+Plano de testes			
+Equipa: C#1			
+	"Bruno Clemente, nº 2002113
+Isabel Carreiro, nº 2000709
+Luís Santos, nº 1900382 
+Joana Pedroso, nº 2000773
+Vítor Carvalho, nº 1401892"		
+			
+==========================================			
+Testes dinâmicos			
+==========================================		
+Classificação: unitários de caixa fechada
+==========================================
+ID	  Descrição	Dados de Input	                                        Resultado esperado
+===   =====================================================             ===============================================================
+1	    Não inserção de comando		                                        Print: Deve introduzir um Comando.
+2	    Erro: Comando não válido	
+      "-analisssar <path> <nome_imagem>"	                              Print: Comando {comando} não é válido.
+3	    Erro: imagem não encontrada	
+      "-analisar <path> <nome_imagem_inexistente>"	                    Print: Não foi encontrada nenhuma imagem em {path}.
+4	    Teste imagens com cores sólidas 
+      (apenas um canal de cor ativo) 
+      para garantir que a contagem de pixels esteja correta.	
+       imagem_vermelho	                                                Print: Results:   Red: {100}%            
+5	    Teste imagens com cores sólidas 
+      (apenas um canal de cor ativo) 
+      para garantir que a contagem de pixels esteja correta.	
+      imagem_verde	                                                    Print: Results:   Green: {100}%
+6	    Teste imagens com cores sólidas 
+      (apenas um canal de cor ativo) 
+      para garantir que a contagem de pixels esteja correta.	
+      imagem_azul	                                                      Print: Results:   Blue: {100}%
+7	    Erro: insucesso da operação	
+      "-analisar <path> <nome_imagem_invalida>"	                        Print: Não foi posível executar a operação {operation} com sucesso.
+			
+=========================			
+Testes integração			
+=========================			
+Classificação: explosão		
+
+==========================================
+ID	  Descrição	Dados de Input	                                        Resultado esperado
+===   =====================================================             ========================================================
+8	    Teste da imagem 1	
+      "-analisar <path> <nome_imagem_1>"	                              Print: Results:          
+                                                                                Red: {results.RedPercentage}%            
+                                                                                Green: {results.GreenPercentage}%
+                                                                                Blue: {results.BluePercentage}%
+			
